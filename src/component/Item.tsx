@@ -1,0 +1,43 @@
+import { IList } from '../../pages';
+import { Button, Header } from 'semantic-ui-react';
+import styles from './Item.module.css';
+
+interface Props {
+  item: IList;
+}
+
+export default function Item({ item }: Props) {
+  const {
+    name,
+    image_link,
+    price,
+    description,
+    updated_at,
+    category,
+    product_type,
+    product_link,
+  } = item;
+  console.log(category);
+  console.log(product_type);
+  return (
+    <>
+      <div className={styles.wrap}>
+        <div className={styles.img_item}>
+          <img src={image_link} alt={name} />
+        </div>
+        <div className={styles.info_item}>
+          <strong className={styles.tit_item}>{name}</strong>
+          <strong className={styles.num_price}>${price}</strong>
+          <span className={styles.txt_info}>
+            category : {category ? `${category} ` : 'none'}
+            <br />
+            type : {product_type}
+          </span>
+          <Button color="orange">구매하기</Button>
+        </div>
+      </div>
+      <Header as="h3">Description</Header>
+      <p style={{ paddingBottom: 20, fontSize: 18 }}>{description}</p>
+    </>
+  );
+}
