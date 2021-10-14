@@ -16,7 +16,7 @@ const Post = ({ item }: IItem) => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const id = context.params.id;
+  const id = context.params?.id;
   const API_URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
   const res = await axios.get(API_URL);
   const data = res.data;
