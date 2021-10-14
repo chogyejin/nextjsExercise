@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { IList } from '..';
 import Item from '../../src/component/Item';
+import { Loader } from 'semantic-ui-react';
 
 const Post = () => {
   const router = useRouter();
@@ -29,12 +30,14 @@ const Post = () => {
     updated_at: '',
     website_link: '',
   });
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
 
   const API_URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
 
   function getData() {
     axios.get(API_URL).then((res) => {
       setItem(res.data);
+      setIsLoading(false);
     });
   }
 
@@ -45,7 +48,17 @@ const Post = () => {
     }
   }, [id]);
 
-  return <Item item={item} />;
+  return (
+    <div>
+      {isLoading ? (
+        <div style={{ padding: '300px 0' }}>
+          <Loader active>Loading</Loader>
+        </div>
+      ) : (
+        <Item item={item} />
+      )}
+    </div>
+  );
 };
 
 export default Post;
