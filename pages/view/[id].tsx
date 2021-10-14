@@ -1,18 +1,24 @@
 //id별 상세페이지
 import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { IList } from '..';
 import Item from '../../src/component/Item';
-import { Loader } from 'semantic-ui-react';
 import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
 
 interface IItem {
   item: IList;
 }
 
 const Post = ({ item }: IItem) => {
-  return <div>{item && <Item item={item} />}</div>;
+  return (
+    <>
+      <Head>
+        <title>{item.name}</title>
+        <meta name="description" content={item.description}></meta>
+      </Head>
+      <Item item={item} />
+    </>
+  );
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
