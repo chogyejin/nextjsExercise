@@ -5,60 +5,27 @@ import { useEffect, useState } from 'react';
 import { IList } from '..';
 import Item from '../../src/component/Item';
 import { Loader } from 'semantic-ui-react';
+import { GetServerSidePropsContext } from 'next';
 
-const Post = () => {
-  const router = useRouter();
-  const { id } = router.query; //useRouter로 query를 받음(props와 유사)
-  const [item, setItem] = useState<IList>({
-    api_featured_image: '',
-    brand: '',
-    category: '',
-    created_at: '',
-    currency: '',
-    description: '',
-    id: 0,
-    image_link: '',
-    name: '',
-    price: '',
-    price_sign: '',
-    product_api_url: '',
-    product_colors: [],
-    product_link: '',
-    product_type: '',
-    rating: 0,
-    tag_list: [],
-    updated_at: '',
-    website_link: '',
-  });
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
+interface IItem {
+  item: IList;
+}
 
-  const API_URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
-
-  function getData() {
-    axios.get(API_URL).then((res) => {
-      setItem(res.data);
-      setIsLoading(false);
-    });
-  }
-
-  //id가 있고 id>0 이면 데이터 호출하는 useEffect
-  useEffect(() => {
-    if (Number(id) && Number(id) > 0) {
-      getData();
-    }
-  }, [id]);
-
-  return (
-    <div>
-      {isLoading ? (
-        <div style={{ padding: '300px 0' }}>
-          <Loader active>Loading</Loader>
-        </div>
-      ) : (
-        <Item item={item} />
-      )}
-    </div>
-  );
+const Post = ({ item }: IItem) => {
+  return <div>{item && <Item item={item} />}</div>;
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const id = context.params.id;
+  const API_URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
+  const res = await axios.get(API_URL);
+  const data = res.data;
+
+  return {
+    props: {
+      item: data,
+    },
+  };
+}
 
 export default Post;
