@@ -31,9 +31,10 @@ export interface IList {
 export default function Home() {
   const [list, setList] = useState<IList[]>([]);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
-  const API_URL =
-    'http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline';
+  //환경변수로 모드별로 URL 분기처리
+  const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
+  console.log(typeof process.env.NEXT_PUBLIC_API_URL);
   function getData() {
     axios.get(API_URL).then((res) => {
       console.log(res.data);

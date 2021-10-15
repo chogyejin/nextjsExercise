@@ -7,15 +7,17 @@ import Head from 'next/head';
 
 interface IItem {
   item: IList;
+  name: string;
 }
 
-const Post = ({ item }: IItem) => {
+const Post = ({ item, name }: IItem) => {
   return (
     <>
       <Head>
         <title>{item.name}</title>
         <meta name="description" content={item.description}></meta>
       </Head>
+      {name} 환경입니다.
       <Item item={item} />
     </>
   );
@@ -30,6 +32,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {
       item: data,
+      name: process.env.name, //Nodejs 환경
     },
   };
 }
