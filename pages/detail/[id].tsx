@@ -13,12 +13,16 @@ interface IItem {
 const Post = ({ item, name }: IItem) => {
   return (
     <>
-      <Head>
-        <title>{item.name}</title>
-        <meta name="description" content={item.description}></meta>
-      </Head>
-      {name} 환경입니다.
-      <Item item={item} />
+      {item && (
+        <>
+          <Head>
+            <title>{item.name}</title>
+            <meta name="description" content={item.description}></meta>
+          </Head>
+          {name} 환경 입니다.
+          <Item item={item} />
+        </>
+      )}
     </>
   );
 };
@@ -42,7 +46,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const API_URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
   const res = await axios.get(API_URL);
   const data = res.data;
-
+  const aa = process.env.nn;
   return {
     props: {
       item: data,
