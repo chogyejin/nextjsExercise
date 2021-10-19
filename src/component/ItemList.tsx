@@ -15,7 +15,7 @@ export default function ItemList({ list }: Props) {
         <Grid.Row>
           {list.map((item) => (
             <Grid.Column key={item.id}>
-              <Link href={`/view/${item.id}`}>
+              <Link href={`/detail/${item.id}`}>
                 <a>
                   <div className={styles.wrap}>
                     <img
