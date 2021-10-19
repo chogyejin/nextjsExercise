@@ -7,6 +7,7 @@ import ItemList from '../src/component/ItemList';
 
 //받아올 객체 배열에 들어가는 프로퍼티들의 타입 지정
 export interface IList {
+  slice: any;
   api_featured_image: string;
   brand: string;
   category: string;
@@ -28,53 +29,46 @@ export interface IList {
   website_link: string;
 }
 
-export default function Home() {
-  const [list, setList] = useState<IList[]>([]);
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
-  //환경변수로 모드별로 URL 분기처리
-  const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
+interface Props {
+  list: IList;
+}
 
-  console.log(typeof process.env.NEXT_PUBLIC_API_URL);
-  function getData() {
-    axios.get(API_URL).then((res) => {
-      console.log(res.data);
-      setList(res.data);
-      //console.log(res.data) // setList()가 비동기적이라 바로 console 출력 X
-      setIsLoading(false);
-    });
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+export default function Home({ list }: Props) {
   //isLoading true면 로딩 jsx, false면 상품 jsx
   return (
     <div>
       <Head>
         <title>호빵맨</title>
       </Head>
-      {isLoading && (
-        <div style={{ padding: '300px 0' }}>
-          <Loader active>Loading</Loader>
-        </div>
-      )}
-      {!isLoading && (
-        <div>
-          <Header as="h3" style={{ paddingTop: 40 }}>
-            Best 상품
-          </Header>
-          <Divider />
-          {/* list 0에서 9까지 */}
-          <ItemList list={list.slice(0, 9)} />
-          <Header as="h3" style={{ paddingTop: 40 }}>
-            신상품
-          </Header>
-          <Divider />
-          {/* 9부터 끝까지 */}
-          <ItemList list={list.slice(9)} />
-        </div>
-      )}
+
+      <div>
+        <Header as="h3" style={{ paddingTop: 40 }}>
+          Best 상품
+        </Header>
+        <Divider />
+        {/* list 0에서 9까지 */}
+        <ItemList list={list.slice(0, 9)} />
+        <Header as="h3" style={{ paddingTop: 40 }}>
+          신상품
+        </Header>
+        <Divider />
+        {/* 9부터 끝까지 */}
+        <ItemList list={list.slice(9)} />
+      </div>
     </div>
   );
+}
+
+//정적 생성해서 Home에 {list}로 props 전달
+export async function getStaticProps() {
+  const apiUrl = process.env.apiUrl as string;
+  const res = await axios.get(apiUrl);
+  const data = res.data;
+
+  return {
+    props: {
+      list: data,
+      name: process.env.name,
+    },
+  };
 }
