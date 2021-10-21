@@ -7,7 +7,6 @@ import ItemList from '../src/component/ItemList';
 
 //받아올 객체 배열에 들어가는 프로퍼티들의 타입 지정
 export interface IList {
-  slice: any;
   api_featured_image: string;
   brand: string;
   category: string;
@@ -30,7 +29,7 @@ export interface IList {
 }
 
 interface Props {
-  list: IList;
+  list: IList[];
 }
 
 export default function Home({ list }: Props) {
