@@ -11,6 +11,8 @@ export default function Gnb() {
     activeItem = 'home';
   } else if (router.pathname === '/about') {
     activeItem = 'about';
+  } else if (router.pathname === '/admin') {
+    activeItem = 'admin';
   }
 
   //location.href나 <a> 이용하여 이동 시 페이지가 전부 새로고침됨. -> SPA 장점 사라짐
@@ -19,6 +21,8 @@ export default function Gnb() {
       router.push('/');
     } else if (data.name === 'about') {
       router.push('/about');
+    } else if (data.name === 'admin') {
+      router.push('/admin');
     }
   }
 
@@ -28,6 +32,11 @@ export default function Gnb() {
       <Menu.Item
         name="about"
         active={activeItem === 'about'}
+        onClick={goLink}
+      />
+      <Menu.Item
+        name="admin"
+        active={activeItem === 'admin'}
         onClick={goLink}
       />
     </Menu>
